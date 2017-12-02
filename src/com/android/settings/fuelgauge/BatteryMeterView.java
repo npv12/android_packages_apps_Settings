@@ -46,6 +46,7 @@ public class BatteryMeterView extends ImageView {
     CircleBatteryDrawable mCircleDrawable;
     FullCircleBatteryDrawable mFullCircleDrawable;
     private int mIconStyle = 0;
+    private int mLevel;
 
     public BatteryMeterView(Context context) {
         this(context, null, 0);
@@ -97,9 +98,8 @@ public class BatteryMeterView extends ImageView {
     }
 
     public void setBatteryLevel(int level) {
-        mCircleDrawable.setBatteryLevel(level);
-        mFullCircleDrawable.setBatteryLevel(level);
-        mThemedDrawable.setBatteryLevel(level);
+        mLevel = level;
+        mDrawable.setBatteryLevel(level);
         updateColorFilter();
     }
 
@@ -115,7 +115,11 @@ public class BatteryMeterView extends ImageView {
     }
 
     public boolean getPowerSave() {
-        return mThemedDrawable.getPowerSaveEnabled();
+        return mDrawable.getPowerSaveEnabled();
+    }
+
+    public int getBatteryLevel() {
+        return mLevel;
     }
 
     public void setCharging(boolean charging) {

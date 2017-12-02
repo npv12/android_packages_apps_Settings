@@ -35,6 +35,7 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.provider.SearchIndexableResource;
+import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.text.format.Formatter;
 import android.text.TextUtils;
@@ -260,6 +261,9 @@ public class PowerUsageSummary extends PowerUsageBase implements OnLongClickList
         mBatteryLayoutPref = (LayoutPreference) findPreference(KEY_BATTERY_HEADER);
         mBatteryView = mBatteryLayoutPref.findViewById(R.id.battery_header_icon);
         mBatteryView.setDrawableStyle();
+
+        mBatteryLevel = getContext().getResources().getInteger(
+                com.android.internal.R.integer.config_criticalBatteryWarningLevel) + 1;
 
         mBatteryLevel = getContext().getResources().getInteger(
                 com.android.internal.R.integer.config_criticalBatteryWarningLevel) + 1;
