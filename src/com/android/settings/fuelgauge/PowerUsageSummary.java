@@ -68,7 +68,7 @@ import com.android.settingslib.search.SearchIndexable;
 import com.android.settingslib.utils.PowerUtil;
 import com.android.settingslib.utils.StringUtil;
 import com.android.settingslib.widget.LayoutPreference;
-
+import com.android.internal.util.exui.Utils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -102,6 +102,7 @@ public class PowerUsageSummary extends PowerUsageBase implements OnLongClickList
     private static final String KEY_TIME_SINCE_LAST_FULL_CHARGE = "last_full_charge";
     private static final String KEY_BATTERY_SAVER_SUMMARY = "battery_saver_summary";
     private static final String KEY_SMART_CHARGING = "smart_charging_key";
+    private static final String KEY_BATTERY_TEMP = "battery_temp";
 
     private String mBatDesCap;
     private String mBatCurCap;
@@ -131,6 +132,8 @@ public class PowerUsageSummary extends PowerUsageBase implements OnLongClickList
     PowerGaugePreference mLastFullChargePref;
     @VisibleForTesting
     PowerUsageFeatureProvider mPowerFeatureProvider;
+    @VisibleForTesting
+    PowerGaugePreference mBatteryTemp;
     @VisibleForTesting
     BatteryUtils mBatteryUtils;
     @VisibleForTesting
@@ -278,6 +281,7 @@ public class PowerUsageSummary extends PowerUsageBase implements OnLongClickList
         mLastFullChargePref = (PowerGaugePreference) findPreference(
                 KEY_TIME_SINCE_LAST_FULL_CHARGE);
         mFooterPreferenceMixin.createFooterPreference().setTitle(R.string.battery_footer_summary);
+        mBatteryTemp = (PowerGaugePreference) findPreference(KEY_BATTERY_TEMP);
         mBatteryUtils = BatteryUtils.getInstance(getContext());
 
         mSmartCharging = (Preference) findPreference(KEY_SMART_CHARGING);
@@ -419,6 +423,10 @@ public class PowerUsageSummary extends PowerUsageBase implements OnLongClickList
         updateLastFullChargePreference();
         mScreenUsagePref.setSummary(StringUtil.formatElapsedTime(getContext(),
                 mBatteryUtils.calculateScreenUsageTime(mStatsHelper), false));
+        mBatteryTemp.setSummary(
+                com.android.internal.util.exui.Utils.mccCheck(getContext()) ?
+                com.android.internal.util.exui.Utils.batteryTemperature(getContext(), true) + "°F" :
+                com.android.internal.util.exui.Utils.batteryTemperature(getContext(), false) + "°C");
         mCurrentBatteryCapacity.setSummary(parseBatterymAhText(mBatCurCap));
         mDesignedBatteryCapacity.setSummary(parseBatterymAhText(mBatDesCap));
         mBatteryChargeCycles.setSummary(parseBatteryCycle(mBatChgCyc));
