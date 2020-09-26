@@ -99,7 +99,7 @@ public class BatteryMeterView extends ImageView {
 
     public void setBatteryLevel(int level) {
         mLevel = level;
-        mDrawable.setBatteryLevel(level);
+        mThemedDrawable.setBatteryLevel(level);
         updateColorFilter();
     }
 
@@ -115,12 +115,9 @@ public class BatteryMeterView extends ImageView {
     }
 
     public boolean getPowerSave() {
-        return mDrawable.getPowerSaveEnabled();
+        return mThemedDrawable.getPowerSaveEnabled();
     }
 
-    public int getBatteryLevel() {
-        return mLevel;
-    }
 
     public void setCharging(boolean charging) {
         mCircleDrawable.setCharging(charging);
